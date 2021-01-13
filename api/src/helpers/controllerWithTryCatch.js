@@ -9,7 +9,7 @@ const controllerWithTryCatch = (cb) => (
         const { message, path } = error;
         return res.status(400).json({ message, path });
       }
-
+      console.log(errors);
       return res.status(500).json({ message: 'unknow error' });
     }
   });

@@ -1,6 +1,7 @@
 const { Router } = require('express');
 
 const { controllerWithTryCatch } = require('../helpers');
+const { validateToken } = require('../middlewares');
 
 const {
   createOperation,
@@ -12,13 +13,13 @@ const {
 
 const router = Router();
 
-router.post('/operation', controllerWithTryCatch(createOperation));
+router.post('/operation', validateToken, controllerWithTryCatch(createOperation));
 
-router.get('/', controllerWithTryCatch(getOperations));
+router.get('/', validateToken, controllerWithTryCatch(getOperations));
 
 router.route('/operation/:id')
-  .get(controllerWithTryCatch(getOperation))
-  .put(controllerWithTryCatch(updateOperation))
-  .delete(controllerWithTryCatch(deleteOperation));
+  .get(validateToken, controllerWithTryCatch(getOperation))
+  .put(validateToken, controllerWithTryCatch(updateOperation))
+  .delete(validateToken, controllerWithTryCatch(deleteOperation));
 
 module.exports = router;

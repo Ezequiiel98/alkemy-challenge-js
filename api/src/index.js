@@ -2,6 +2,7 @@ const cors = require('cors');
 const express = require('express');
 
 const database = require('./config/database');
+require('./models/Users.model');
 
 const PORT_APP = process.env.PORT || 3001;
 const app = express();

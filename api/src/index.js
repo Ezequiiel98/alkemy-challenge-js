@@ -1,8 +1,15 @@
 const cors = require('cors');
 const express = require('express');
 
-const database = require('./config/database');
+// routes
+const authRoutes = require('./routes/auth.routes');
 
+// database
+const database = require('./config/database');
+require('./models/Users.model');
+require('./models/Valid-tokens.model');
+
+// app
 const PORT_APP = process.env.PORT || 3001;
 const app = express();
 
@@ -21,6 +28,8 @@ database.sync()
 
 app.use(cors());
 app.use(express.json());
+
+app.use('/auth', authRoutes);
 
 app.listen(PORT_APP, () => {
   console.log(`Server on port ${PORT_APP}`);

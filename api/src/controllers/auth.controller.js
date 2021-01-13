@@ -1,13 +1,13 @@
 const jwt = require('jsonwebtoken');
 
 const { SECRET_JWT } = require('../config/jwt');
-const User = require('../models/Users.model');
+const Users = require('../models/Users.model');
 const ValidTokens = require('../models/Valid-tokens.model');
 
 exports.signUp = async (req, res) => {
   const { username, email, password } = req.body;
 
-  await User.create({
+  await Users.create({
     username, email, password,
   });
 
@@ -21,7 +21,7 @@ exports.login = async (req, res) => {
     return res.status(401).json({ message: 'Email and password are required' });
   }
 
-  const user = await User.findOne({ where: { email } });
+  const user = await Users.findOne({ where: { email } });
 
   if (!user) {
     return res.status(401).json({ message: 'The password or email is wrong' });

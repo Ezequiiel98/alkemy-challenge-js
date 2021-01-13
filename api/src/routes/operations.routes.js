@@ -1,23 +1,24 @@
 const { Router } = require('express');
 
 const { controllerWithTryCatch } = require('../helpers');
-/*
+
 const {
   createOperation,
+  getOperations,
   getOperation,
   updateOperation,
-  deleteOperation
-} = require('../controllers/operations.controller.js'); */
+  deleteOperation,
+} = require('../controllers/operations.controller.js');
 
 const router = Router();
 
-router.post('/operation', (req, res) => res.send('post'));
+router.post('/operation', controllerWithTryCatch(createOperation));
 
-router.get('/', (req, res) => res.send('get operationss'));
+router.get('/', controllerWithTryCatch(getOperations));
 
 router.route('/operation/:id')
-  .get((req, res) => res.send('get'))
-  .put((req, res) => res.send('put'))
-  .delete((req, res) => res.send('delete'));
+  .get(controllerWithTryCatch(getOperation))
+  .put(controllerWithTryCatch(updateOperation))
+  .delete(controllerWithTryCatch(deleteOperation));
 
 module.exports = router;

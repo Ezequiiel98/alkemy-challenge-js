@@ -3,13 +3,11 @@ const User = require('../models/Users.model');
 
 exports.createOperation = async (req, res) => {
   const {
-    amount, date, description, type,
+    amount, date, description, type, userId,
   } = req.body;
 
-  // const user = await User.findOne({ where: { id: userId } });
-
   await Operations.create({
-    amount, date, description, type,
+    amount, date, description, type, userId,
   });
 
   return res.status(201).json({ message: 'Operation created successfully' });
@@ -20,6 +18,7 @@ exports.createOperation = async (req, res) => {
 // default url/path?per_page=1&page=0&last=false;
 exports.getOperations = async (req, res) => {
   const { per_page: perPage, page, last } = req.query;
+  const { userId } = req.body;
 
   const limit = parseInt(perPage, 10) || 10;
   const indexPage = parseInt(page, 10) || 1;
@@ -28,6 +27,7 @@ exports.getOperations = async (req, res) => {
 
   const operations = await Operations.findAll({
     attributes: { exclude: ['userId'] },
+    where: { userId },
     limit,
     offset,
     order,
@@ -39,8 +39,12 @@ exports.getOperations = async (req, res) => {
 // get operation by id
 exports.getOperation = async (req, res) => {
   const { id } = req.params;
+  const { userId } = req.body;
 
-  const operation = await Operations.findOne({ where: { id } });
+  const operation = await Operations.findOne({
+    where: { id, userId },
+    attributes: { exclude: ['userId'] },
+  });
 
   if (!operation) {
     return res.status(404).json({ message: 'Operation not found' });
@@ -53,14 +57,14 @@ exports.getOperation = async (req, res) => {
 exports.updateOperation = async (req, res) => {
   const { id } = req.params;
   const {
-    amount, date, description,
+    amount, date, description, userId,
   } = req.body;
 
   const newData = {
     amount, date, description,
   };
 
-  const operationExist = await Operations.findOne({ where: { id } });
+  const operationExist = await Operations.findOne({ where: { id, userId } });
 
   if (!operationExist) {
     return res.status(404).json({ message: 'Operation not found' });
@@ -74,8 +78,9 @@ exports.updateOperation = async (req, res) => {
 // delete operation
 exports.deleteOperation = async (req, res) => {
   const { id } = req.params;
+  const { userId } = req.body;
 
-  await Operations.destroy({ where: { id } });
+  await Operations.destroy({ where: { id, userId } });
 
-  res.status(200).send('Operation deleted successfully');
+  res.status(200).send({ message: 'Operation deleted successfully' });
 };

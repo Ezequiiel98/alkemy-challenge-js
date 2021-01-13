@@ -11,13 +11,10 @@ const validateToken = async (req, res, next) => {
 
   if (!tokenIsValid) return res.status(401).json({ message: 'Invalid token' });
 
-  try {
-    const tokenDecoded = jwt.verify(token, SECRET_JWT);
-    req.body.userId = tokenDecoded.id;
-    next();
-  } catch {
-    return res.status(401).json({ message: 'Invalid token' });
-  }
+  const tokenDecoded = jwt.verify(token, SECRET_JWT);
+  req.body.userId = tokenDecoded.id;
+
+  return next();
 };
 
 module.exports = validateToken;

@@ -3,7 +3,7 @@ const controllerWithTryCatch = (cb) => (
     try {
       return await cb(req, res);
     } catch (errors) {
-      const [error] = errors.errors;
+      const [error] = errors.errors || [];
 
       if (error) {
         const { message, path } = error;

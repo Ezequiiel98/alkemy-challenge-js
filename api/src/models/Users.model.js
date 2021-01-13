@@ -27,7 +27,7 @@ const Users = database.define('users', {
     },
     unique: {
       args: true,
-      msg: 'This user already exists',
+      msg: 'This email is already registered',
     },
   },
 

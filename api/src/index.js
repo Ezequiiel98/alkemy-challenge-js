@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth.routes');
 // database
 const database = require('./config/database');
 require('./models/Users.model');
+require('./models/Valid-tokens.model');
 
 // app
 const PORT_APP = process.env.PORT || 3001;

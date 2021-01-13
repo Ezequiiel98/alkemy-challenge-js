@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const bcrypt = require('bcryptjs');
 
+const { validatePassword } = require('../helpers');
 const database = require('../config/database');
 
 const Users = database.define('users', {
@@ -17,8 +18,10 @@ const Users = database.define('users', {
       isEmail: {
         msg: 'Enter a valid email',
       },
-
       notEmpty: {
+        msg: 'Email is required',
+      },
+      notNull: {
         msg: 'Email is required',
       },
     },
@@ -35,6 +38,9 @@ const Users = database.define('users', {
       notEmpty: {
         mgs: 'Username is required',
       },
+      notNull: {
+        msg: 'Username is required',
+      },
     },
   },
 
@@ -43,8 +49,12 @@ const Users = database.define('users', {
     allowNull: false,
     validate: {
       notEmpty: {
+        mgs: 'Password is required',
+      },
+      notNull: {
         msg: 'Password is required',
       },
+      validatePassword,
     },
   },
 },

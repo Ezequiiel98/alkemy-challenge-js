@@ -8,7 +8,7 @@ import Button from '../../components/Button';
 import styles from './index.module.scss';
 
 function Login() {
-  const [form, setForm] = useState({ email: '', password: '' });
+  const [form, setForm] = useState({ email: '', password: '', sending: false });
   const [formErrors, setFormErrors] = useState({ email: '', password: '' });
 
   const handleChange = ({ target: { name, value } }) => {
@@ -31,7 +31,11 @@ function Login() {
     }
 
     if (emailIsValid && passwordIsValid) {
-      console.log(form);
+      setForm((lastForm) => ({ ...lastForm, sending: true }));
+      setTimeout(() => {
+        setForm((lastForm) => ({ ...lastForm, sending: false }));
+        console.log(form);
+      }, 2000);
     }
   };
 
@@ -64,7 +68,14 @@ function Login() {
           onChange={handleChange}
           required
         />
-        <Button type="submit" className={styles.buttonSubmit}>Enter</Button>
+        <Button
+          type="submit"
+          className={styles.buttonSubmit}
+          loading={form.sending}
+          disabled={form.sending}
+        >
+          Enter
+        </Button>
       </form>
     </ContainerAuth>
   );

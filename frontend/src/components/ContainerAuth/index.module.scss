@@ -1,6 +1,18 @@
+@keyframes showContainer {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 .containerAuth {
   min-height: 100vh;
   display: flex;
+  animation-name: showContainer;
+  animation-duration: .6s;
 }
 
 .containerBg {

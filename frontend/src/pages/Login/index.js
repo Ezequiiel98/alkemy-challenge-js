@@ -13,12 +13,15 @@ import styles from './index.module.scss';
 function Login(props) {
   const [form, setForm] = useState({ email: '', password: '', sending: false });
   const [formErrors, setFormErrors] = useState({ email: '', password: '' });
+  const [isLoading, setIsLoading] = useState(true);
   const [dataAuth, setDataAuth] = useContext(AuthContext);
 
   useEffect(() => {
     if (dataAuth.token !== '') {
       props.history.push('/');
     }
+
+    setIsLoading(false);
   }, [dataAuth]);
 
   const handleChange = ({ target: { name, value } }) => {
@@ -66,6 +69,7 @@ function Login(props) {
       topLinkTo="/sign-up"
       topLinkText="Don't have an account?"
       title="Welcome!"
+      showLoader={isLoading}
     >
       <form className={styles.form} onSubmit={handleSubmit}>
         <Input

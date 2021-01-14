@@ -1,0 +1,23 @@
+.containerLogin {
+  position: relative;
+  min-height: 100vh;
+  background-image: url('../../assets/img/login-bg.jpg');
+  background-position:  center top;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.containerForm {
+  background-color: #fff;
+  min-width: 450px;
+  min-height: 100%;
+  padding: 20px;
+}
+
+.bgLogin {
+  max-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+}

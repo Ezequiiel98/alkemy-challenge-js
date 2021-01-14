@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 
 import { AuthProvider } from '../../context/AuthContext';
 import Login from '../../pages/Login';
+import SignUp from '../../pages/SignUp';
 
 import PrivateRoute from '../PrivateRoute';
 
@@ -15,6 +16,7 @@ function App() {
       <AuthProvider>
         <PrivateRoute exact path="/" component={testPrivateRoute} redirectTo="/login" />
         <Route exact path="/login" component={Login} />
+        <Route exact path="/sign-up" component={SignUp} />
       </AuthProvider>
     </Switch>
   );

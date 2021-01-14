@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 
 const { validatePassword } = require('../helpers');
 const database = require('../config/database');
+const Operations = require('./Operations.model');
 
 const Users = database.define('users', {
   id: {
@@ -36,7 +37,7 @@ const Users = database.define('users', {
     allowNull: false,
     validate: {
       notEmpty: {
-        mgs: 'Username is required',
+        msg: 'Username is required',
       },
       notNull: {
         msg: 'Username is required',
@@ -49,7 +50,7 @@ const Users = database.define('users', {
     allowNull: false,
     validate: {
       notEmpty: {
-        mgs: 'Password is required',
+        msg: 'Password is required',
       },
       notNull: {
         msg: 'Password is required',
@@ -67,7 +68,7 @@ const Users = database.define('users', {
   },
 });
 
-// Users.hasMany(Operations);
+Users.hasMany(Operations);
 
 // custom methods
 Users.prototype.verifyPassword = function (password) {

@@ -9,6 +9,7 @@ const {
   getOperation,
   updateOperation,
   deleteOperation,
+  getOperationsByType,
 } = require('../controllers/operations.controller.js');
 
 const router = Router();
@@ -21,5 +22,8 @@ router.route('/operation/:id')
   .get(validateToken, controllerWithTryCatch(getOperation))
   .put(validateToken, controllerWithTryCatch(updateOperation))
   .delete(validateToken, controllerWithTryCatch(deleteOperation));
+
+router.get('/spends', validateToken, controllerWithTryCatch((...params) => getOperationsByType(...params, 'spend')));
+router.get('/entries', validateToken, controllerWithTryCatch((...params) => getOperationsByType(...params, 'entry')));
 
 module.exports = router;

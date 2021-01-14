@@ -1,5 +1,5 @@
 const Operations = require('../models/Operations.model');
-const User = require('../models/Users.model');
+const { pagination } = require('../helpers');
 
 exports.createOperation = async (req, res) => {
   const {
@@ -19,11 +19,9 @@ exports.createOperation = async (req, res) => {
 exports.getOperations = async (req, res) => {
   const { per_page: perPage, page, last } = req.query;
   const { userId } = req.body;
-
-  const limit = parseInt(perPage, 10) || 10;
-  const indexPage = parseInt(page, 10) || 1;
-  const offset = (indexPage - 1) * limit;
-  const order = [['id', `${last === 'true' ? 'DESC' : 'ASC'}`]];
+  const {
+    limit, indexPage, offset, order,
+  } = pagination({ perPage, last, page });
 
   const operations = await Operations.findAll({
     attributes: { exclude: ['userId'] },
@@ -33,7 +31,26 @@ exports.getOperations = async (req, res) => {
     order,
   });
 
-  res.status(200).json({ page: indexPage + 1, per_page: perPage, operations });
+  res.status(200).json({ page: indexPage, per_page: limit, operations });
+};
+
+// by type
+exports.getOperationsByType = async (req, res, next, type) => {
+  const { per_page: perPage, page, last } = req.query;
+  const { userId } = req.body;
+  const {
+    limit, indexPage, offset, order,
+  } = pagination({ perPage, last, page });
+
+  const operations = await Operations.findAll({
+    attributes: { exclude: ['userId'] },
+    where: { userId, type },
+    limit,
+    offset,
+    order,
+  });
+
+  res.status(200).json({ page: indexPage, per_page: limit, operations });
 };
 
 // get operation by id

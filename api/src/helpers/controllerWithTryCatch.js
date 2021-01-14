@@ -1,7 +1,7 @@
 const controllerWithTryCatch = (cb) => (
-  async (req, res) => {
+  async (req, res, ...restParams) => {
     try {
-      return await cb(req, res);
+      return await cb(req, res, ...restParams);
     } catch (errors) {
       const [error] = errors.errors || [];
 

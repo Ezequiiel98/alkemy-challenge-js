@@ -10,14 +10,14 @@ import Button from '../../components/Button';
 
 import styles from './index.module.scss';
 
-function Login({ props: { history } }) {
+function Login(props) {
   const [form, setForm] = useState({ email: '', password: '', sending: false });
   const [formErrors, setFormErrors] = useState({ email: '', password: '' });
   const [dataAuth, setDataAuth] = useContext(AuthContext);
 
   useEffect(() => {
     if (dataAuth.token !== '') {
-      history.push('/');
+      props.history.push('/');
     }
   }, [dataAuth]);
 
@@ -103,10 +103,8 @@ function Login({ props: { history } }) {
 }
 
 Login.propTypes = {
-  props: PropTypes.shape({
-    history: PropTypes.shape({
-      push: PropTypes.func.isRequired,
-    }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
   }).isRequired,
 };
 

@@ -1,16 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
+import { AuthContext } from '../../context/AuthContext';
 import { loginService } from '../../services/auth.service';
-import { validateEmail, validatePassword } from '../../helpers';
+import { validateEmail } from '../../helpers';
 import Input from '../../components/Input';
 import ContainerAuth from '../../components/ContainerAuth';
 import Button from '../../components/Button';
 
 import styles from './index.module.scss';
 
-function Login() {
+function Login({ props: { history } }) {
   const [form, setForm] = useState({ email: '', password: '', sending: false });
   const [formErrors, setFormErrors] = useState({ email: '', password: '' });
+  const [dataAuth, setDataAuth] = useContext(AuthContext);
+
+  useEffect(() => {
+    if (dataAuth.token !== '') {
+      history.push('/');
+    }
+  }, [dataAuth]);
 
   const handleChange = ({ target: { name, value } }) => {
     setForm((lastValues) => ({ ...lastValues, [name]: value }));
@@ -22,7 +31,8 @@ function Login() {
 
     try {
       const res = await loginService(data);
-      console.log(res);
+      const { username, token } = res.data;
+      setDataAuth({ username, token });
     } catch (err) {
       const { path, message } = err.response.data;
       setFormErrors((errors) => ({ ...errors, [path || 'password']: message }));
@@ -35,14 +45,14 @@ function Login() {
     e.preventDefault();
     const { email, password } = form;
     const { emailIsValid, emailError } = validateEmail(email);
-    const { passwordIsValid, passwordError } = validatePassword(password);
+    const passwordIsValid = password.length > 8;
 
     if (!emailIsValid) {
       setFormErrors((lastErrors) => ({ ...lastErrors, email: emailError }));
     }
 
     if (!passwordIsValid) {
-      setFormErrors((lastErrors) => ({ ...lastErrors, password: passwordError }));
+      setFormErrors((lastErrors) => ({ ...lastErrors, password: 'Password must be at least 8 characters' }));
     }
 
     if (emailIsValid && passwordIsValid) {
@@ -91,5 +101,13 @@ function Login() {
     </ContainerAuth>
   );
 }
+
+Login.propTypes = {
+  props: PropTypes.shape({
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+    }).isRequired,
+  }).isRequired,
+};
 
 export default Login;

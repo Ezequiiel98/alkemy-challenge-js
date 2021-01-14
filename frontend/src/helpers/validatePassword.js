@@ -12,7 +12,7 @@ const validatePassword = (password) => {
     return result;
   }
 
-  if (password.trim().length < 8 || password.trim().length > 15) {
+  if (password.trim().length < 8 || password.trim().length > 40) {
     result.passwordError = 'Password must be between 8 and 40';
     return result;
   }

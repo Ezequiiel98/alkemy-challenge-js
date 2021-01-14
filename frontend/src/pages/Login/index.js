@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { validateEmail, validatePassword } from '../../helpers';
 import Input from '../../components/Input';
 import ContainerAuth from '../../components/ContainerAuth';
 import Button from '../../components/Button';
@@ -8,16 +9,30 @@ import styles from './index.module.scss';
 
 function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
-  const [formErrors] = useState({ email: '', password: '' });
+  const [formErrors, setFormErrors] = useState({ email: '', password: '' });
 
   const handleChange = ({ target: { name, value } }) => {
     setForm((lastValues) => ({ ...lastValues, [name]: value }));
+    setFormErrors((lastValues) => ({ ...lastValues, [name]: '' }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const { email, password } = form;
+    const { emailIsValid, emailError } = validateEmail(email);
+    const { passwordIsValid, passwordError } = validatePassword(password);
 
-    console.log(form);
+    if (!emailIsValid) {
+      setFormErrors((lastErrors) => ({ ...lastErrors, email: emailError }));
+    }
+
+    if (!passwordIsValid) {
+      setFormErrors((lastErrors) => ({ ...lastErrors, password: passwordError }));
+    }
+
+    if (emailIsValid && passwordIsValid) {
+      console.log(form);
+    }
   };
 
   return (
@@ -36,6 +51,7 @@ function Login() {
           error={formErrors.email}
           value={form.email}
           onChange={handleChange}
+          required
         />
 
         <Input
@@ -46,6 +62,7 @@ function Login() {
           error={formErrors.password}
           value={form.password}
           onChange={handleChange}
+          required
         />
         <Button type="submit" className={styles.buttonSubmit}>Enter</Button>
       </form>

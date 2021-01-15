@@ -6,7 +6,7 @@ import AuthContext from './AuthContext';
 
 export default function AuthProvider({ children }) {
   const initialState = {
-    token: localStorage.getItem('token') || '',
+    token: JSON.parse(localStorage.getItem('token')) || '',
     email: '',
     username: '',
   };

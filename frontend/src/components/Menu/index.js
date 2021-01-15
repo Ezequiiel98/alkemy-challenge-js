@@ -57,10 +57,10 @@ function Menu() {
             </Link>
           </li>
           <li className={styles.menuItem}>
-            <Link to="/new" className={styles.link}>
+            <Link to="/operations" className={styles.link}>
               <img src={addIcon} alt="" />
               {' '}
-              Add new
+              ABM Operations
             </Link>
           </li>
         </ul>

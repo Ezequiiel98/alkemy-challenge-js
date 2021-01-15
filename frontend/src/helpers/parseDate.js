@@ -4,7 +4,7 @@ const parseDate = (d) => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth();
 
-  return `${day}/${month}/${year}`;
+  return `${month}/${day}/${year}`;
 };
 
 export default parseDate;

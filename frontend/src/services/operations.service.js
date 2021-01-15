@@ -8,10 +8,8 @@ export const getOperations = ({
   },
 });
 
-export const loginService = (data) => api.post('/auth/login', data);
-
-export const signUpService = (data) => api.post('/auth/signup', data);
-
-export const logoutService = (token) => api.delete(`/auth/logout/${token}`);
-
-export const validateTokenService = (token) => api.get(`/auth/validate-token/${token}`);
+export const createOperation = (data, token) => api.post('/operations/operation', data, {
+  headers: {
+    'x-access-token': token,
+  },
+});

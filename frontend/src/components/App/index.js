@@ -7,6 +7,7 @@ import Login from '../../pages/Login';
 import SignUp from '../../pages/SignUp';
 
 import Home from '../../pages/Home';
+import AbmOperations from '../../pages/AbmOperations';
 
 import PrivateRoute from '../PrivateRoute';
 
@@ -15,6 +16,7 @@ function App() {
     <Switch>
       <AuthProvider>
         <PrivateRoute exact path="/" component={Home} redirectTo="/login" />
+        <PrivateRoute exact path="/operations" component={AbmOperations} redirectTo="/login" />
         <Route exact path="/login" component={Login} />
         <Route exact path="/sign-up" component={SignUp} />
       </AuthProvider>

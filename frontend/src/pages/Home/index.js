@@ -30,30 +30,28 @@ function Home(props) {
     <ContainerApp>
       <Header spend={5000} entry={1233} rest={1203} />
 
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th className={styles.tableHead}>Amount</th>
-            <th className={styles.tableHead}>Type</th>
-            <th className={styles.tableHead}>Description</th>
-            <th className={styles.tableHead}>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr className={styles.tableRow}>
-            <td className={styles.tableItem}>$500</td>
-            <td className={styles.tableItem}>spend</td>
-            <td className={styles.tableItem}>food</td>
-            <td className={styles.tableItem}>12/15/12</td>
-          </tr>
-          <tr className={styles.tableRow}>
-            <td className={styles.tableItem}>$500</td>
-            <td className={styles.tableItem}>spend</td>
-            <td className={styles.tableItem}>food</td>
-            <td className={styles.tableItem}>12/15/12</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className={styles.table}>
+        <div className={styles.tableHeadContainer}>
+          <p className={styles.tableHead}>Amount</p>
+          <p className={styles.tableHead}>Type</p>
+          <p className={styles.tableHead}>Description</p>
+          <p className={styles.tableHead}>Date</p>
+        </div>
+        <div className={styles.tableBody}>
+          <div className={styles.tableRow}>
+            <p className={styles.tableItem}>$500</p>
+            <p className={styles.tableItem}>spend</p>
+            <p className={styles.tableItem}>food</p>
+            <p className={styles.tableItem}>12/15/12</p>
+          </div>
+          <div className={styles.tableRow}>
+            <p className={styles.tableItem}>$500</p>
+            <p className={styles.tableItem}>spend</p>
+            <p className={styles.tableItem}>food</p>
+            <p className={styles.tableItem}>12/15/12</p>
+          </div>
+        </div>
+      </div>
     </ContainerApp>
   );
 }

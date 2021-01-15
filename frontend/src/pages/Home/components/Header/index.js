@@ -23,8 +23,7 @@ function Header({ spend, entry, rest }) {
       <div className={styles.containerRest}>
         <h1 className={styles.title}>Rest</h1>
         <h3 className={styles.money}>
-          $
-          {rest}
+          {rest < 0 ? `-$${Math.abs(rest)}` : `$${rest}`}
         </h3>
       </div>
     </div>

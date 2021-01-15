@@ -1,7 +1,9 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
+import { parseDate } from '../../helpers';
 import { validateTokenService } from '../../services/auth.service';
+import { getOperations } from '../../services/operations.service';
 import { AuthContext } from '../../context/AuthContext';
 import ContainerApp from '../../components/ContainerApp';
 
@@ -10,6 +12,9 @@ import styles from './index.module.scss';
 
 function Home(props) {
   const [dataAuth, setDataAuth] = useContext(AuthContext);
+  const [operations, setOperations] = useState([]);
+  const [dataMoney, setDataMoney] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const validateToken = async () => {
@@ -23,12 +28,28 @@ function Home(props) {
         props.history.push('/login');
       }
     };
+
+    const getLastOperations = async () => {
+      try {
+        const res = await getOperations({ last: true, token: dataAuth.token });
+        console.log(res);
+        setOperations(res.data.operations);
+        setDataMoney(res.data.money);
+      } catch (err) {
+        console.log(err);
+      }
+      setIsLoading(false);
+    };
+
     validateToken();
+    getLastOperations();
+
+    return null;
   }, []);
 
   return (
-    <ContainerApp>
-      <Header spend={5000} entry={1233} rest={1203} />
+    <ContainerApp showLoader={isLoading}>
+      <Header {...dataMoney} />
 
       <div className={styles.table}>
         <div className={styles.tableHeadContainer}>
@@ -38,18 +59,17 @@ function Home(props) {
           <p className={styles.tableHead}>Date</p>
         </div>
         <div className={styles.tableBody}>
-          <div className={styles.tableRow}>
-            <p className={styles.tableItem}>$500</p>
-            <p className={styles.tableItem}>spend</p>
-            <p className={styles.tableItem}>food</p>
-            <p className={styles.tableItem}>12/15/12</p>
-          </div>
-          <div className={styles.tableRow}>
-            <p className={styles.tableItem}>$500</p>
-            <p className={styles.tableItem}>spend</p>
-            <p className={styles.tableItem}>food</p>
-            <p className={styles.tableItem}>12/15/12</p>
-          </div>
+          {operations.map((operation) => (
+            <div className={styles.tableRow} key={operation.id}>
+              <p className={styles.tableItem}>
+                $
+                {operation.amount}
+              </p>
+              <p className={styles.tableItem}>{operation.type}</p>
+              <p className={styles.tableItem}>{operation.description}</p>
+              <p className={styles.tableItem}>{parseDate(operation.date)}</p>
+            </div>
+          ))}
         </div>
       </div>
     </ContainerApp>

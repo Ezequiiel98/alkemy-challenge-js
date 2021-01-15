@@ -49,3 +49,24 @@ exports.logout = async (req, res) => {
 
   return res.status(200).json({ message: 'logout' });
 };
+
+exports.validateTokenController = async (req, res) => {
+  const { token } = req.params;
+
+  const tokenIsValid = await ValidTokens.findOne({ where: { token } });
+
+  if (!tokenIsValid) return res.status(401).json({ message: 'Invalid token' });
+
+  const tokenDecoded = jwt.verify(token, SECRET_JWT);
+
+  const user = await Users.findOne({
+    where: { id: tokenDecoded.id },
+    attributes: { exclude: ['id', 'password'] },
+  });
+
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  return res.status(200).json(user);
+};

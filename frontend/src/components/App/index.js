@@ -6,15 +6,15 @@ import { AuthProvider } from '../../context/AuthContext';
 import Login from '../../pages/Login';
 import SignUp from '../../pages/SignUp';
 
-import PrivateRoute from '../PrivateRoute';
+import Home from '../../pages/Home';
 
-const testPrivateRoute = () => <h1>private route</h1>;
+import PrivateRoute from '../PrivateRoute';
 
 function App() {
   return (
     <Switch>
       <AuthProvider>
-        <PrivateRoute exact path="/" component={testPrivateRoute} redirectTo="/login" />
+        <PrivateRoute exact path="/" component={Home} redirectTo="/login" />
         <Route exact path="/login" component={Login} />
         <Route exact path="/sign-up" component={SignUp} />
       </AuthProvider>

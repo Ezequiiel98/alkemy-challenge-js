@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { AuthContext } from '../../context/AuthContext';
+import { validateTokenService } from '../../services/auth.service';
 import { getOperationByIdService, updateOperationService } from '../../services/operations.service';
 import ContainerApp from '../../components/ContainerApp';
 import FormOperations from '../../components/FormOperations';
@@ -12,7 +13,7 @@ function UpdateOperation(props) {
   });
   const [formErrors, setFormErrors] = useState({ amount: '', description: '' });
   const [isLoading, setIsLoading] = useState(true);
-  const [dataAuth] = useContext(AuthContext);
+  const [dataAuth, setDataAuth] = useContext(AuthContext);
 
   useEffect(() => {
     const getOperation = async () => {
@@ -26,6 +27,19 @@ function UpdateOperation(props) {
 
       setIsLoading(false);
     };
+
+    const validateToken = async () => {
+      try {
+        const { data: { username, email } } = await validateTokenService(dataAuth.token);
+        setDataAuth({ ...dataAuth, username, email });
+      } catch {
+        localStorage.removeItem('token');
+        setDataAuth({ });
+        props.history.push('/login');
+      }
+    };
+
+    validateToken();
     getOperation();
   }, []);
 

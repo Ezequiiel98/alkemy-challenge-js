@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 import { parseDate } from '../../helpers';
+import { validateTokenService } from '../../services/auth.service';
 import { getOperationsService } from '../../services/operations.service';
 import { AuthContext } from '../../context/AuthContext';
 import ContainerApp from '../../components/ContainerApp';
@@ -8,8 +10,8 @@ import ContainerApp from '../../components/ContainerApp';
 import Header from './components/Header';
 import styles from './index.module.scss';
 
-function Home() {
-  const [dataAuth] = useContext(AuthContext);
+function Home(props) {
+  const [dataAuth, setDataAuth] = useContext(AuthContext);
   const [operations, setOperations] = useState([]);
   const [dataMoney, setDataMoney] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -18,7 +20,6 @@ function Home() {
     const getLastOperations = async () => {
       try {
         const res = await getOperationsService({ last: true, token: dataAuth.token });
-        console.log(res);
         setOperations(res.data.operations);
         setDataMoney(res.data.money);
       } catch (err) {
@@ -27,6 +28,18 @@ function Home() {
       setIsLoading(false);
     };
 
+    const validateToken = async () => {
+      try {
+        const { data: { username, email } } = await validateTokenService(dataAuth.token);
+        setDataAuth({ ...dataAuth, username, email });
+      } catch {
+        localStorage.removeItem('token');
+        setDataAuth({ });
+        props.history.push('/login');
+      }
+    };
+
+    validateToken();
     getLastOperations();
 
     return null;
@@ -61,4 +74,9 @@ function Home() {
   );
 }
 
+Home.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 export default Home;

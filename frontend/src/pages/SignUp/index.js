@@ -1,6 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import { validatePassword, validateEmail } from '../../helpers';
+import { signUpService } from '../../services/auth.service';
 import { AuthContext } from '../../context/AuthContext';
 import Input from '../../components/Input';
 import ContainerAuth from '../../components/ContainerAuth';
@@ -11,13 +13,13 @@ import styles from './index.module.scss';
 
 function SignUp(props) {
   const [form, setForm] = useState({
-    email: '', username: '', password: '', passwordReapeated: '', sending: false,
+    email: '', username: '', password: '', passwordRepeated: '', sending: false,
   });
   const [formErrors, setFormErrors] = useState({
-    email: '', username: '', password: '', passwordReapeated: '',
+    email: '', username: '', password: '', passwordRepeated: '',
   });
   const [isLoading, setIsLoading] = useState(true);
-  const [dataAuth] = useContext(AuthContext);
+  const [dataAuth, setDataAuth] = useContext(AuthContext);
 
   useEffect(() => {
     if (dataAuth.token !== '') {
@@ -25,7 +27,23 @@ function SignUp(props) {
     }
 
     setIsLoading(false);
+    return null;
   }, [dataAuth]);
+
+  const sendForm = async (data) => {
+    setForm((lastForm) => ({ ...lastForm, sending: true }));
+
+    try {
+      await signUpService(data);
+      setDataAuth({ ...dataAuth, email: data.email });
+      props.history.push('/login');
+    } catch (err) {
+      const { path, message } = err.response?.data;
+      setFormErrors((errors) => ({ ...errors, [path || 'password']: message || 'There was an error try later' }));
+    }
+
+    setForm((lastForm) => ({ ...lastForm, sending: false }));
+  };
 
   const handleChange = ({ target: { name, value } }) => {
     setForm((lastValues) => ({ ...lastValues, [name]: value }));
@@ -34,6 +52,36 @@ function SignUp(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const {
+      password, username, email, passwordRepeated,
+    } = form;
+    const data = {
+      password, username: username.trim(), email, passwordRepeated,
+    };
+    const { passwordIsValid, passwordError } = validatePassword(password);
+    const { emailIsValid, emailError } = validateEmail(email);
+    const passwordsEquals = password === passwordRepeated;
+    const usernameIsValid = username.length > 4;
+
+    if (!emailIsValid) {
+      setFormErrors((lastErrors) => ({ ...lastErrors, email: emailError }));
+    }
+
+    if (!passwordIsValid) {
+      setFormErrors((lastErrors) => ({ ...lastErrors, password: passwordError }));
+    }
+
+    if (!passwordsEquals) {
+      setFormErrors((lastErrors) => ({ ...lastErrors, passwordRepeated: 'Passwords must be the same' }));
+    }
+
+    if (!usernameIsValid) {
+      setFormErrors((lastErrors) => ({ ...lastErrors, username: 'Username must have at least 4 characters' }));
+    }
+
+    if (emailIsValid && passwordIsValid && passwordsEquals) {
+      sendForm(data);
+    }
   };
 
   return (

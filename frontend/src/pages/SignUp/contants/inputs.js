@@ -6,19 +6,19 @@ const INPUTS = [
     id: 'email',
   },
   {
-    key: 0,
+    key: 1,
     type: 'text',
     label: 'username',
     id: 'username',
   },
   {
-    key: 0,
+    key: 2,
     type: 'password',
     label: 'password',
     id: 'password',
   },
   {
-    key: 0,
+    key: 3,
     type: 'password',
     label: 'Repeat Password',
     id: 'passwordRepeated',

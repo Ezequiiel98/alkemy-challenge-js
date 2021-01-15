@@ -48,3 +48,71 @@ exports.getOperations = async (req, res) => {
     operations,
   });
 };
+
+// by type
+exports.getOperationsByType = async (req, res, next, type) => {
+  const { per_page: perPage, page, last } = req.query;
+  const { userId } = req.body;
+  const {
+    limit, indexPage, offset, order,
+  } = pagination({ perPage, last, page });
+
+  const operations = await Operations.findAll({
+    attributes: { exclude: ['userId'] },
+    where: { userId, type },
+    limit,
+    offset,
+    order,
+  });
+
+  res.status(200).json({ page: indexPage, per_page: limit, operations });
+};
+
+// get operation by id
+exports.getOperation = async (req, res) => {
+  const { id } = req.params;
+  const { userId } = req.body;
+
+  const operation = await Operations.findOne({
+    where: { id, userId },
+    attributes: { exclude: ['userId'] },
+  });
+
+  if (!operation) {
+    return res.status(404).json({ message: 'Operation not found' });
+  }
+
+  return res.status(200).json(operation);
+};
+
+// update
+exports.updateOperation = async (req, res) => {
+  const { id } = req.params;
+  const {
+    amount, date, description, userId,
+  } = req.body;
+
+  const newData = {
+    amount, date, description,
+  };
+
+  const operationExist = await Operations.findOne({ where: { id, userId } });
+
+  if (!operationExist) {
+    return res.status(404).json({ message: 'Operation not found' });
+  }
+
+  await Operations.update(newData, { where: { id } });
+
+  return res.status(200).json({ message: 'Operation updated successfully' });
+};
+
+// delete operation
+exports.deleteOperation = async (req, res) => {
+  const { id } = req.params;
+  const { userId } = req.body;
+
+  await Operations.destroy({ where: { id, userId } });
+
+  res.status(200).send({ message: 'Operation deleted successfully' });
+};

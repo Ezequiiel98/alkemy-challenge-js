@@ -1,0 +1,38 @@
+.containerHeader {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.containerMoney {
+  padding: 15px 10px;
+  min-width: 200px;
+  margin: 10px;
+  color: #fff;
+  text-align: center;
+}
+
+.containerEntry {
+  @extend .containerMoney;
+  background-color: #00A65A;
+}
+
+.containerSpend {
+  @extend .containerMoney;
+  background-color: #DD4B39;
+}
+
+.containerRest {
+  @extend .containerMoney;
+  background-color: #00A3CB;
+}
+
+.title {
+  margin: 0;
+  font-weight: 400;
+}
+
+.money {
+  font-size: 22px;
+  font-weight: 400;
+}

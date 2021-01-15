@@ -10,7 +10,7 @@ export default function PrivateRoute({
 }) {
   const [{ token }] = useContext(AuthContext);
   const hasPermissions = Boolean(token);
-  console.log(hasPermissions, token);
+
   return (
     <Route
       {...rest}

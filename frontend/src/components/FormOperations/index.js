@@ -52,6 +52,7 @@ function FormOperations({
           type="date"
           onChange={onChange}
           value={data.date}
+          required
         />
         <Button loading={data.sending} type="submit">Create</Button>
       </form>

@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 
 import { parseDate } from '../../helpers';
-import { validateTokenService } from '../../services/auth.service';
 import { getOperations } from '../../services/operations.service';
 import { AuthContext } from '../../context/AuthContext';
 import ContainerApp from '../../components/ContainerApp';
@@ -10,25 +8,13 @@ import ContainerApp from '../../components/ContainerApp';
 import Header from './components/Header';
 import styles from './index.module.scss';
 
-function Home(props) {
-  const [dataAuth, setDataAuth] = useContext(AuthContext);
+function Home() {
+  const [dataAuth] = useContext(AuthContext);
   const [operations, setOperations] = useState([]);
   const [dataMoney, setDataMoney] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const validateToken = async () => {
-      try {
-        const { data: { username, email } } = await validateTokenService(dataAuth.token);
-        console.log(dataAuth.token);
-        setDataAuth({ ...dataAuth, username, email });
-      } catch {
-        localStorage.removeItem('token');
-        setDataAuth({ });
-        props.history.push('/login');
-      }
-    };
-
     const getLastOperations = async () => {
       try {
         const res = await getOperations({ last: true, token: dataAuth.token });
@@ -41,7 +27,6 @@ function Home(props) {
       setIsLoading(false);
     };
 
-    validateToken();
     getLastOperations();
 
     return null;
@@ -75,11 +60,5 @@ function Home(props) {
     </ContainerApp>
   );
 }
-
-Home.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-};
 
 export default Home;

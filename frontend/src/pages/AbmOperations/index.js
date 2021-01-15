@@ -13,7 +13,7 @@ function AbmOperations() {
     amount: '', date: '', type: 'entry', description: '', sending: false,
   });
   const [formErrors, setFormErrors] = useState({ amount: '', description: '' });
-
+  const [newOperation, setNewOperation] = useState(false);
   const [dataAuth] = useContext(AuthContext);
 
   const handleChange = ({ target: { name, value } }) => {
@@ -30,6 +30,8 @@ function AbmOperations() {
       setForm({
         amount: '', date: '', type: 'entry', description: '', sending: false,
       });
+
+      setNewOperation(!newOperation);
     } catch (err) {
       const { path, message } = err.response.data;
       setFormErrors((errors) => ({ ...errors, [path || 'amount']: message }));
@@ -70,7 +72,7 @@ function AbmOperations() {
         onChange={handleChange}
         onSubmit={handleSubmit}
       />
-      <TableOperations />
+      <TableOperations newOperation={newOperation} />
     </ContainerApp>
   );
 }

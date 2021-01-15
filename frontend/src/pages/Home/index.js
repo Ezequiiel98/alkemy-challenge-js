@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import { parseDate } from '../../helpers';
-import { getOperations } from '../../services/operations.service';
+import { getOperationsService } from '../../services/operations.service';
 import { AuthContext } from '../../context/AuthContext';
 import ContainerApp from '../../components/ContainerApp';
 
@@ -17,7 +17,7 @@ function Home() {
   useEffect(() => {
     const getLastOperations = async () => {
       try {
-        const res = await getOperations({ last: true, token: dataAuth.token });
+        const res = await getOperationsService({ last: true, token: dataAuth.token });
         console.log(res);
         setOperations(res.data.operations);
         setDataMoney(res.data.money);

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { parseDate } from '../../helpers';
 import { validateTokenService } from '../../services/auth.service';
-import { getOperations } from '../../services/operations.service';
+import { getOperationsService } from '../../services/operations.service';
 import { AuthContext } from '../../context/AuthContext';
 import ContainerApp from '../../components/ContainerApp';
 
@@ -17,28 +17,26 @@ function Home(props) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const validateToken = async () => {
-      try {
-        const { data: { username, email } } = await validateTokenService(dataAuth.token);
-        console.log(dataAuth.token);
-        setDataAuth({ ...dataAuth, username, email });
-      } catch {
-        localStorage.removeItem('token');
-        setDataAuth({ });
-        props.history.push('/login');
-      }
-    };
-
     const getLastOperations = async () => {
       try {
-        const res = await getOperations({ last: true, token: dataAuth.token });
-        console.log(res);
+        const res = await getOperationsService({ last: true, token: dataAuth.token });
         setOperations(res.data.operations);
         setDataMoney(res.data.money);
       } catch (err) {
         console.log(err);
       }
       setIsLoading(false);
+    };
+
+    const validateToken = async () => {
+      try {
+        const { data: { username, email } } = await validateTokenService(dataAuth.token);
+        setDataAuth({ ...dataAuth, username, email });
+      } catch {
+        localStorage.removeItem('token');
+        setDataAuth({ });
+        props.history.push('/login');
+      }
     };
 
     validateToken();
@@ -49,7 +47,11 @@ function Home(props) {
 
   return (
     <ContainerApp showLoader={isLoading}>
-      <Header {...dataMoney} />
+      <Header
+        entry={dataMoney.entry || 0}
+        spend={dataMoney.spend || 0}
+        rest={dataMoney.rest || 0}
+      />
 
       <div className={styles.table}>
         <div className={styles.tableHeadContainer}>
@@ -81,5 +83,4 @@ Home.propTypes = {
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
-
 export default Home;

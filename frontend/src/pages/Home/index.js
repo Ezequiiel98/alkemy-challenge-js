@@ -47,7 +47,11 @@ function Home(props) {
 
   return (
     <ContainerApp showLoader={isLoading}>
-      <Header {...dataMoney} />
+      <Header
+        entry={dataMoney.entry || 0}
+        spend={dataMoney.spend || 0}
+        rest={dataMoney.rest || 0}
+      />
 
       <div className={styles.table}>
         <div className={styles.tableHeadContainer}>

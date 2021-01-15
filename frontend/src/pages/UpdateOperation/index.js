@@ -41,6 +41,8 @@ function UpdateOperation(props) {
 
     validateToken();
     getOperation();
+
+    return null;
   }, []);
 
   const handleChange = ({ target: { name, value } }) => {

@@ -9,8 +9,8 @@ export default function PrivateRoute({
   component: Component, redirectTo, ...rest
 }) {
   const [{ token }] = useContext(AuthContext);
-  const hasPermissions = token.length > 0;
-
+  const hasPermissions = Boolean(token);
+  console.log(hasPermissions, token);
   return (
     <Route
       {...rest}

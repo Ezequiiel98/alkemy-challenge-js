@@ -35,7 +35,7 @@ function SignUp(props) {
 
     try {
       await signUpService(data);
-      setDataAuth({ ...dataAuth, email: data.email });
+      setDataAuth({ email: data.email });
       props.history.push('/login');
     } catch (err) {
       const { path, message } = err.response?.data;

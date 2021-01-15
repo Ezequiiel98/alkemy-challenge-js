@@ -13,9 +13,12 @@ export default function AuthProvider({ children }) {
 
   const [dataAuth, setData] = useState(initialState);
 
-  const setDataAuth = ({ token, username }) => {
-    setData({ token, username });
-    localStorage.setItem('token', JSON.stringify(token));
+  const setDataAuth = ({ token = '', username = '', email = '' }) => {
+    setData({ token, username, email });
+
+    if (token !== '') {
+      localStorage.setItem('token', JSON.stringify(token));
+    }
   };
 
   return (

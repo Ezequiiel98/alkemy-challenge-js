@@ -11,10 +11,10 @@ import Button from '../../components/Button';
 import styles from './index.module.scss';
 
 function Login(props) {
-  const [form, setForm] = useState({ email: '', password: '', sending: false });
+  const [dataAuth, setDataAuth] = useContext(AuthContext);
+  const [form, setForm] = useState({ email: dataAuth.email, password: '', sending: false });
   const [formErrors, setFormErrors] = useState({ email: '', password: '' });
   const [isLoading, setIsLoading] = useState(true);
-  const [dataAuth, setDataAuth] = useContext(AuthContext);
 
   useEffect(() => {
     if (dataAuth.token !== '') {

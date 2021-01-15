@@ -8,7 +8,7 @@ export const getOperations = ({
   },
 });
 
-export const createOperation = (data, token) => api.post('/operations/operation', data, {
+export const createOperationService = (data, token) => api.post('/operations/operation', data, {
   headers: {
     'x-access-token': token,
   },

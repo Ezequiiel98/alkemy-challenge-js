@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
+import { AuthContext } from '../../context/AuthContext';
+import { createOperationService } from '../../services/operations.service';
 import ContainerApp from '../../components/ContainerApp';
 import FormOperations from '../../components/FormOperations';
 
@@ -11,9 +13,28 @@ function AbmOperations() {
   });
   const [formErrors, setFormErrors] = useState({ amount: '', description: '' });
 
+  const [dataAuth] = useContext(AuthContext);
+
   const handleChange = ({ target: { name, value } }) => {
     setForm((lastValues) => ({ ...lastValues, [name]: value }));
     setFormErrors((lastValues) => ({ ...lastValues, [name]: '' }));
+  };
+
+  const sendOperation = async (data) => {
+    setForm((lastForm) => ({ ...lastForm, sending: true }));
+
+    try {
+      await createOperationService(data, dataAuth.token);
+
+      setForm({
+        amount: '', date: '', type: 'entry', description: '', sending: false,
+      });
+    } catch (err) {
+      const { path, message } = err.response.data;
+      setFormErrors((errors) => ({ ...errors, [path || 'amount']: message }));
+    }
+
+    setForm((lastForm) => ({ ...lastForm, sending: false }));
   };
 
   const handleSubmit = (e) => {
@@ -34,7 +55,9 @@ function AbmOperations() {
     }
 
     if (amountIsValid && descriptionIsValid) {
-      console.log(amount, description, type, dateValid);
+      sendOperation({
+        amount, description, type, date: dateValid,
+      });
     }
   };
 

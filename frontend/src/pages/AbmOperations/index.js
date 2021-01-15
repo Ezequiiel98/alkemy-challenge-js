@@ -5,6 +5,7 @@ import { createOperationService } from '../../services/operations.service';
 import ContainerApp from '../../components/ContainerApp';
 import FormOperations from '../../components/FormOperations';
 
+import TableOperations from './components/TableOperations';
 // import styles from './index.module.scss';
 
 function AbmOperations() {
@@ -69,6 +70,7 @@ function AbmOperations() {
         onChange={handleChange}
         onSubmit={handleSubmit}
       />
+      <TableOperations />
     </ContainerApp>
   );
 }

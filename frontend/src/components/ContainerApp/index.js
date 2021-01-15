@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import Loader from '../Loader';
 import Menu from '../Menu';
 
+import styles from './index.module.scss';
+
 function ContainerApp({
   children, showLoader,
 }) {
@@ -12,7 +14,7 @@ function ContainerApp({
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       <Menu />
       {children}
     </div>

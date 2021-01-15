@@ -19,3 +19,15 @@ export const deleteOperationService = (id, token) => api.delete(`/operations/ope
     'x-access-token': token,
   },
 });
+
+export const getOperationByIdService = (id, token) => api.get(`/operations/operation/${id}`, {
+  headers: {
+    'x-access-token': token,
+  },
+});
+
+export const updateOperationService = (id, data, token) => api.put(`/operations/operation/${id}`, data, {
+  headers: {
+    'x-access-token': token,
+  },
+});

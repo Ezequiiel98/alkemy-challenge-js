@@ -8,6 +8,7 @@ import SignUp from '../../pages/SignUp';
 
 import Home from '../../pages/Home';
 import AbmOperations from '../../pages/AbmOperations';
+import UpdateOperation from '../../pages/UpdateOperation';
 
 import PrivateRoute from '../PrivateRoute';
 
@@ -17,6 +18,7 @@ function App() {
       <AuthProvider>
         <PrivateRoute exact path="/" component={Home} redirectTo="/login" />
         <PrivateRoute exact path="/operations" component={AbmOperations} redirectTo="/login" />
+        <PrivateRoute exact path="/update-operation/:id" component={UpdateOperation} redirectTo="/login" />
         <Route exact path="/login" component={Login} />
         <Route exact path="/sign-up" component={SignUp} />
       </AuthProvider>

@@ -54,7 +54,7 @@ function FormOperations({
           value={data.date}
           required
         />
-        <Button loading={data.sending} type="submit">Create</Button>
+        <Button loading={data.sending} type="submit">{ updated ? 'Update' : 'Create' }</Button>
       </form>
     </div>
   );

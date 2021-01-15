@@ -18,6 +18,7 @@ function TableOperations({ newOperation }) {
   const [buttonLoading, setButtonLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [noMoreOperations, setNoMoreOperations] = useState(false);
+  const [idsOperations, setIdOperations] = useState({});
 
   useEffect(() => {
     const getOperations = async () => {
@@ -26,9 +27,22 @@ function TableOperations({ newOperation }) {
         const { data } = await getOperationsService({ page, token: dataAuth.token });
 
         if (data.operations.length > 0) {
-          setOperations((op) => ([...op, ...data.operations]));
-        } else {
+          const idsTemp = { };
+          const uniqueOperations = data.operations.filter((element) => {
+            if (!idsOperations[element.id]) {
+              idsTemp[element.id] = true;
+              return element;
+            }
+            return null;
+          });
+          setIdOperations((lastIds) => ({ ...lastIds, ...idsTemp }));
+          setOperations((op) => ([...op, ...uniqueOperations]));
+        }
+
+        if (data.operations.length < 10) {
           setNoMoreOperations(true);
+        } else {
+          setNoMoreOperations(false);
         }
       } catch (err) {
         console.log(err);

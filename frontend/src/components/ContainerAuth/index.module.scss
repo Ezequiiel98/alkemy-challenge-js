@@ -1,0 +1,75 @@
+@keyframes showContainer {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.containerAuth {
+  min-height: 100vh;
+  display: flex;
+  justify-content: flex-end;
+  animation-name: showContainer;
+  animation-duration: .6s;
+}
+
+.containerBg {
+  display: none;
+  min-height: 100%;
+}
+
+.bgAuth {
+  max-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+}
+
+@media screen and (min-width: 480px){
+  .containerBg {
+    display: block;
+  }
+}
+
+.containerForm {
+  background-color: #fff;
+  min-width: 100%; 
+  min-height: 100%;
+  padding: 20px;
+}
+
+@media screen and (min-width: 480px){
+  .containerForm {
+    min-width: 330px;
+    padding: 30px;
+  }
+}
+
+@media screen and (min-width: 768px){
+  .containerForm {
+    min-width: 500px;
+  }
+}
+
+.title {
+  text-align: center;
+  font-weight: 300;
+  color: #7B7B7B;
+  font-size: 42px;
+  margin: 55px 0;
+}
+
+.linkText {
+  text-align: right;
+  font-weight: 200;
+  margin-top: 0;
+  font-size: 16.5px;
+}
+
+.link {
+  font-weight: 400;
+  margin: 0 5px;
+}
+

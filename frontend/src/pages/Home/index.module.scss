@@ -1,0 +1,33 @@
+.table {
+  margin: 50px auto;
+  min-width: 100%;
+}
+
+.tableHeadContainer {
+  display: flex;
+  padding: 15px;
+  justify-content: space-between;
+  background-color: #222d32;
+}
+
+.tableBody {
+  background-color: #fff;
+}
+
+.tableRow {
+  display: flex;
+  padding: 15px;
+  justify-content: space-between;
+}
+
+.tableHead, 
+.tableItem {
+  margin: 0;
+}
+
+.tableHead {
+  font-weight: 600;
+  font-size: 16.4px;
+  color: #fff;
+  text-align: left;
+}

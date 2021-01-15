@@ -1,0 +1,61 @@
+.label {
+  display: block;
+  color: #929293;
+  margin: 8px auto;
+  font-size: 17px;
+  font-weight: 400;
+  
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}
+
+.containerErrors {
+  font-size: 14.5px;
+  font-weight: 400;
+  margin: 8px 2px;
+}
+
+.error {
+  color: #FF5F58;
+  padding: 0;
+  animation-name: showError;
+  animation-duration: .5s;
+  margin-right: 3px;
+}
+
+@keyframes showError {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.containerInput {
+  position: relative;
+  margin-bottom: 18px;
+}
+
+.input {
+  padding: 10px;
+  border: 1px solid #D4D4D4;
+  min-width: 100%;
+  outline: none;
+  font-size: 17px;
+  transition: border-color .5s ease;
+  
+  &:focus {
+    border-color: #346EDF;
+  }
+}
+
+.input[type=number]::-webkit-inner-spin-button, 
+.input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+}
+

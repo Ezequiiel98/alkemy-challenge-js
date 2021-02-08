@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 
-import { validateTokenService } from '../../services/auth.service';
-import { AuthContext } from '../../context/AuthContext';
+import { useValidateToken } from '../../hooks';
 import { createOperationService } from '../../services/operations.service';
 import ContainerApp from '../../components/ContainerApp';
 import FormOperations from '../../components/FormOperations';
@@ -10,29 +8,13 @@ import FormOperations from '../../components/FormOperations';
 import TableOperations from './components/TableOperations';
 // import styles from './index.module.scss';
 
-function AbmOperations(props) {
+function AbmOperations() {
+  const [dataAuth] = useValidateToken();
   const [form, setForm] = useState({
     amount: '', date: '', type: 'entry', description: '', sending: false,
   });
   const [formErrors, setFormErrors] = useState({ amount: '', description: '' });
   const [newOperation, setNewOperation] = useState(false);
-  const [dataAuth, setDataAuth] = useContext(AuthContext);
-
-  useEffect(() => {
-    const validateToken = async () => {
-      try {
-        const { data: { username, email } } = await validateTokenService(dataAuth.token);
-        setDataAuth({ ...dataAuth, username, email });
-      } catch {
-        localStorage.removeItem('token');
-        setDataAuth({ });
-        props.history.push('/login');
-      }
-    };
-
-    validateToken();
-    return null;
-  }, []);
 
   const handleChange = ({ target: { name, value } }) => {
     setForm((lastValues) => ({ ...lastValues, [name]: value }));
@@ -95,9 +77,4 @@ function AbmOperations(props) {
   );
 }
 
-AbmOperations.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-};
 export default AbmOperations;
